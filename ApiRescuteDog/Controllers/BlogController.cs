@@ -19,6 +19,11 @@ namespace ApiRescuteDog.Controllers
         public ActionResult<List<BlogModel>> GetBlogs()
         {
             return this.repo.GetPost();
+        } 
+        [HttpGet("{id}")]
+        public ActionResult<List<BlogModel>> FindBlog()
+        {
+            return this.repo.GetPost();
         }
         [HttpPost]
         public async Task<ActionResult> PublicacionNueva(BlogModel blog)

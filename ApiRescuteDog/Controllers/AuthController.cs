@@ -1,6 +1,7 @@
 ﻿using ApiRescuteDog.Helpers;
 using ApiRescuteDog.Models;
 using ApiRescuteDog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -27,7 +28,7 @@ namespace ApiRescuteDog.Controllers
         public async Task<ActionResult> Login(LoginModel model)
         {
             User usuario =
-                await this.repo.ExisteUsuario(model.UserName, model.Password);
+                await this.repo.ExisteUsuario(model.Email, model.Password);
 
             if (usuario == null)
             {
@@ -68,6 +69,19 @@ namespace ApiRescuteDog.Controllers
         {
             await this.repo.NewUser(username, password, email, phone, imagen, birdthday);
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize]
+        public async Task<ActionResult<User>> GetPerfilUsuario()
+        {
+            Claim claim = HttpContext.User.Claims.SingleOrDefault(x => x.Type == "UserData");
+            string jsonUsuario =
+                claim.Value;
+            User usuario =
+                JsonConvert.DeserializeObject<User>(jsonUsuario);
+            return usuario;
         }
     }
 }

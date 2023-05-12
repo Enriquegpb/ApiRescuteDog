@@ -15,8 +15,15 @@ namespace ApiRescuteDog.Controllers
         {
             this.repo = repo;
         }
-        [HttpGet("{idrefugio}")]
-        public ActionResult<List<Mascota>> GetMascotas(int idrefugio)
+        [HttpGet]
+        public ActionResult<List<Mascota>> GenerarInformeAdopciones()
+        {
+            return  this.repo.GenerarInformeAdopciones();
+        }
+
+        [HttpGet]
+        [Route("[action]/{idrefugio}")]
+        public ActionResult<List<Mascota>> GetMascotasRefugio(int idrefugio)
         {
             return this.repo.GetMascotas(idrefugio);
         }

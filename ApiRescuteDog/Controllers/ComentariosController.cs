@@ -43,5 +43,13 @@ namespace ApiRescuteDog.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<ActionResult> NewComentario(Comentario comentario)
+        {
+            await this.repo.NewComentario(comentario.IdPost, comentario.Email, comentario.ComentarioDesc, DateTime.UtcNow, comentario.IdUser);
+            return Ok();
+        }
+
     }
 }
