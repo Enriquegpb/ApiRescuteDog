@@ -1,4 +1,5 @@
 ﻿using ApiRescuteDog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetRescuteDog.Models;
@@ -27,6 +28,7 @@ namespace ApiRescuteDog.Controllers
         {
             return this.repo.FindComentario(id);
         }
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteComentario(int id)
         {
@@ -34,15 +36,14 @@ namespace ApiRescuteDog.Controllers
             return Ok();
 
         }
-
+        [Authorize]
         [HttpPut]
-
         public async Task<ActionResult> EditarComentario(Comentario comentario)
         {
             await this.repo.EditComentario(comentario);
             return Ok();
         }
-
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
         public async Task<ActionResult> NewComentario(Comentario comentario)

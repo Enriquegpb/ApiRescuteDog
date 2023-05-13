@@ -1,4 +1,5 @@
 ﻿using ApiRescuteDog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetRescuteDog.Models;
@@ -32,25 +33,28 @@ namespace ApiRescuteDog.Controllers
         {
             return this.repo.DetailsMascota(id);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> AltaMascota (Mascota mascota)
         {
             await this.repo.IngresoAnimal(mascota);
             return Ok();
         }
+        [Authorize]
         [HttpDelete("{idrefugio}")]
         public async Task<ActionResult> FullBajaMascotasRufugio(int idrefugio)
         {
             await this.repo.BajasAllMascotasPorRefugio(idrefugio);
             return Ok();
         }
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult> ModificarMascota (Mascota mascota)
         {
             await this.repo.UpdateMascotas(mascota);
             return Ok();
         }
+        [Authorize]
         [HttpPut]
         [Route("[action]/{idmascota}/{estado}")]
         public async Task<ActionResult> UpdateEstadoAdopcion(int idmascota, bool estado)

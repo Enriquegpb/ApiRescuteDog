@@ -71,9 +71,9 @@ namespace ApiRescuteDog.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
-        [Authorize]
         public async Task<ActionResult<User>> GetPerfilUsuario()
         {
             Claim claim = HttpContext.User.Claims.SingleOrDefault(x => x.Type == "UserData");

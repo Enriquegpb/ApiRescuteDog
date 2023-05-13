@@ -1,4 +1,5 @@
 ﻿using ApiRescuteDog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetRescuteDog.Models;
@@ -14,6 +15,7 @@ namespace ApiRescuteDog.Controllers
         {
             this.repo = repo;
         }
+        [Authorize]
         [HttpPost]
         [Route("[action]/{idmascota}/{iduser}")]
         public async Task<ActionResult> NuevaAdopcion(int idmascota, int iduser)
@@ -21,6 +23,7 @@ namespace ApiRescuteDog.Controllers
             await this.repo.NuevaAdopcion(idmascota, iduser);
             return Ok();
         }
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAdopcion(int id)
         {

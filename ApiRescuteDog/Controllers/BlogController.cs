@@ -1,4 +1,5 @@
 ﻿using ApiRescuteDog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetRescuteDog.Models;
@@ -25,18 +26,21 @@ namespace ApiRescuteDog.Controllers
         {
             return this.repo.GetPost();
         }
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> PublicacionNueva(BlogModel blog)
         {
             await this.repo.NewPost(blog);
             return Ok();
         }
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePublicacion(int id)
         {
             await this.repo.DeletePost(id);
             return Ok();
         }
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult> ModficarPublicacion(BlogModel blog)
         {
