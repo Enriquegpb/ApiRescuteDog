@@ -39,10 +39,10 @@ namespace ApiRescuteDog.Controllers
                 SigningCredentials credentials =
                     new SigningCredentials(this.helperOAuth.GetKeyToken(), SecurityAlgorithms.HmacSha256);
                 //GENERACION DEL JWT TOKEN CON SUS CORRESPONDIENTES DATOS
-                string jsonUsuarioVideojuego = JsonConvert.SerializeObject(usuario);
+                string jsonUsuario = JsonConvert.SerializeObject(usuario);
                 Claim[] informacion = new[]
                 {
-                    new Claim("UserData", jsonUsuarioVideojuego)
+                    new Claim("UserData", jsonUsuario)
                 };
 
                 JwtSecurityToken token =
@@ -82,6 +82,23 @@ namespace ApiRescuteDog.Controllers
             User usuario =
                 JsonConvert.DeserializeObject<User>(jsonUsuario);
             return usuario;
+        }
+
+        [Authorize]
+        [Route("[action]")]
+        [HttpPut]
+        public async Task<ActionResult<User>> UpdatePerfilUsuario(string username, string telefono, string email, string imagen, int iduser)
+        {
+            await this.repo.UpdatePerfilusuario(username, telefono, email, imagen, iduser);
+            return Ok();
+        }
+        
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> BajaUsuario(int iduser)
+        {
+            await this.repo.BajaUsuario(iduser);
+            return Ok();
         }
     }
 }

@@ -51,5 +51,12 @@ namespace ApiRescuteDog.Controllers
             await this.repo.UpdateMascotas(mascota);
             return Ok();
         }
+        [HttpPut]
+        [Route("[action]/{idmascota}/{estado}")]
+        public async Task<ActionResult> UpdateEstadoAdopcion(int idmascota, bool estado)
+        {
+            await this.repo.UpdateEstadoAdopcion(idmascota, estado);
+            return Ok();
+        }
     }
 }
