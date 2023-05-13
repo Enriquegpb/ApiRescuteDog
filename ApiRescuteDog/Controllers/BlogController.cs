@@ -22,9 +22,9 @@ namespace ApiRescuteDog.Controllers
             return this.repo.GetPost();
         } 
         [HttpGet("{id}")]
-        public ActionResult<List<BlogModel>> FindBlog()
+        public ActionResult<BlogModel> FindBlog(int id)
         {
-            return this.repo.GetPost();
+            return this.repo.FindPost(id);
         }
         [Authorize]
         [HttpPost]

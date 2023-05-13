@@ -83,7 +83,7 @@ namespace ApiRescuteDog.Controllers
         }
 
         [Authorize]
-        [Route("[action]")]
+        [Route("[action]/{username}/{telefono}/{email}/{imagen}/{iduser}")]
         [HttpPut]
         public async Task<ActionResult<User>> UpdatePerfilUsuario(string username, string telefono, string email, string imagen, int iduser)
         {
@@ -93,9 +93,9 @@ namespace ApiRescuteDog.Controllers
         
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> BajaUsuario(int iduser)
+        public async Task<ActionResult<User>> BajaUsuario(int id)
         {
-            await this.repo.BajaUsuario(iduser);
+            await this.repo.BajaUsuario(id);
             return Ok();
         }
     }

@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using ApiRescuteDog.Data;
 using NugetRescuteDog.Models;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics.Metrics;
 
 namespace ApiRescuteDog.Repositories
 {
@@ -21,9 +23,9 @@ namespace ApiRescuteDog.Repositories
     // INSERT INTO RESCUTEBLOG VALUES(@IDMAXPOST, @TITULO, @CONTENIDO, @IMAGEN, @IDUSER, @FEHCA)
     //GO
 
-    //    CREATE PROCEDURE SP_UPDATE_POST(@IDPOST INT, @TITULO NVARCHAR(50), @CONTENIDO NVARCHAR(50), @IMAGEN NVARCHAR(600), @IDUSER INT, @FEHCA NVARCHAR(75))
+    //    ALTER PROCEDURE SP_UPDATE_POST(@IDPOST INT, @TITULO NVARCHAR(50), @CONTENIDO NVARCHAR(50), @IMAGEN NVARCHAR(600), @IDUSER INT, @FECHA NVARCHAR(75))
     //AS
-    //    UPDATE RESCUTEBLOG SET @TITULO = @TITULO, CONTENIDO = @CONTENIDO, IMAGEN = @IMAGEN, IDUSER = @IDUSER, FECHA = @FEHCA
+    //    UPDATE RESCUTEBLOG SET @TITULO = @TITULO, CONTENIDO = @CONTENIDO, IMAGEN = @IMAGEN, IDUSER = @IDUSER, FECHA = FECHA
     //    WHERE IDPOST = @IDPOST
     //GO
 
@@ -56,13 +58,13 @@ namespace ApiRescuteDog.Repositories
 
         public async Task EditPostAsync(BlogModel post)
         {
-            string sql = "SP_UPDATE_POST @IDPOST,@TITULO, @CONTENIDO, @IMAGEN, @IDUSER, @FEHCA";
+            string sql = "SP_UPDATE_POST @IDPOST,@TITULO, @CONTENIDO, @IMAGEN, @IDUSER, @FECHA";
             SqlParameter pamidpost = new SqlParameter("@IDPOST", post.IdPost);
             SqlParameter pamtitulo = new SqlParameter("@TITULO", post.Titulo);
             SqlParameter pamcontenido = new SqlParameter("@CONTENIDO", post.Contenido);
             SqlParameter pamimagen = new SqlParameter("@IMAGEN", post.Imagen);
             SqlParameter pamiduser = new SqlParameter("@IDUSER", post.IdUser);
-            SqlParameter pamfecha = new SqlParameter("@IDUSER", post.Fecha);
+            SqlParameter pamfecha = new SqlParameter("@FECHA", post.Fecha);
             await this.context.Database.ExecuteSqlRawAsync(sql, pamidpost,pamtitulo, pamcontenido, pamimagen, pamiduser, pamfecha);
         }
 
