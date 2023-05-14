@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using NSwag.Generation.Processors.Security;
 using NSwag;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,17 @@ builder.Services.AddSingleton<HelperOAuthToken>();
 HelperOAuthToken helper = new HelperOAuthToken(builder.Configuration);
 //AÑADIR LAS OPCIONES DE AUTENTICACION
 builder.Services.AddAuthentication(helper.GetAuthenticationOptions()).AddJwtBearer(helper.GetJwtOptions());
-string connectionStringAzure = builder.Configuration.GetConnectionString("SqlAzureDatabase");
+builder.Services.AddAzureClients(factory =>
+{
+    factory.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
+});
+//DEBEMOS RECUPERAR, DE FORMA EXPLICITA EL SECRETCLIENT INYECTADO
+SecretClient secretClient =
+    builder.Services.BuildServiceProvider().GetService<SecretClient>();
+KeyVaultSecret keyVaultSecret = await
+    secretClient.GetSecretAsync("SqlAzure");
+
+string connectionStringAzure = keyVaultSecret.Value /*builder.Configuration.GetConnectionString("SqlAzureDatabase")*/;
 builder.Services.AddTransient<IRepoBlog, RepositoryBlog>();
 builder.Services.AddTransient<IRepoComentarios, RepositoryComentarios>();
 builder.Services.AddTransient<IRepoMascotas, RepositoryMascotas>();
